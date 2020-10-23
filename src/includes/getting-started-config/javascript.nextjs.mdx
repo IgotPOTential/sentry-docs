@@ -1,0 +1,33 @@
+If you're using [Vercel](https://vercel.com) you just need to install [Sentry's Vercel integration](/product/integrations/vercel/) and we'll automatically configure your environment for you.
+
+Otherwise, you'll need to configure the following environment variables:
+
+```shell
+SENTRY_DSN="___PUBLIC_DSN___"
+
+SENTRY_RELEASE="my-application@my-application-version"
+
+# used for sourcemap publishing
+SENTRY_AUTH_TOKEN="api-auth-token"
+SENTRY_PROJECT="___PROJECT_SLUG___"
+SENTRY_ORG="___ORG_SLUG___"
+```
+
+<Note>
+
+We don't currently expose any ability to pass additional configuration to the SDK's initialization call. If that's something you need, please [create an issue on GitHub](https://github.com/vercel/next.js/tree/canary/packages/next-plugin-sentry).
+
+</Note>
+
+Lastly, enable generation and publishing of [source maps](sourcemaps/):
+
+```javascript
+const withSourceMaps = require("@zeit/next-source-maps")();
+const withSentry = require("@next/sentry-source-maps")();
+
+module.exports = withSentry(
+  withSourceMaps({
+    experimental: { plugins: true },
+  })
+);
+```
